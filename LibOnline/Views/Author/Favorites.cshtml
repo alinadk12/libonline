@@ -1,0 +1,55 @@
+﻿@model List<LibOnline.Models.Author>
+
+@{
+    ViewBag.Title = "Избранные авторы";
+}
+
+<div class="mrn-top-70">
+    <h1>@ViewBag.Title</h1>
+    <hr />
+</div>
+
+<div class="row">
+    @if (Model.Count < 1)
+    {
+        <div class="col-md-12">У Вас нет авторов в избранном.</div>
+    }
+    else
+    {
+        <div class="col-md-12">
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>Фамилия Имя Отчество</th>
+                        <th>Дата рождения</th>
+                        <th>Страна</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var a in Model)
+                    {
+                        <tr>
+                            <td><a href="/Author?AuthorId=@a.AuthorId">@a.Fullname</a></td>
+                            <td>@a.Birthday.Value.ToString("dd.MM.yyyy") (@a.Age)</td>
+                            @if (a.Country != null)
+                            {
+                                <td>@a.Country.Name</td>
+                            }
+                            else
+                            {
+                                <td>-</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</div>
+
+
+@Scripts.Render("~/scripts/jquery-1.10.2.min.js")
+@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
+

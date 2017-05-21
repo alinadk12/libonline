@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Список книг";
+}
+
+@model PagedList.IPagedList<LibOnline.Models.Book>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@using (Ajax.BeginForm("BookSearch", new AjaxOptions { UpdateTargetId = "searchresult" }))
+{
+    <div class="form-group col-md-4 col-md-offset-8 mrn-top-70">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Поиск книг">
+            <span class="input-group-btn">
+                <input type="submit" value="Поиск" class="btn btn-primary" />
+            </span>
+        </div>
+    </div>
+}
+
+<div class="mrn-top-70">
+    <h1>@ViewBag.Title</h1>
+    <hr />
+</div>
+
+@if (User.IsInRole("Администратор"))
+{
+    <div class="btn-right">
+        <p><a class="btn btn-primary" href="/Book/Add">Добавить книгу</a></p>
+        <p class="text-success">@ViewBag.StatusMessage</p>
+    </div>
+}
+
+<div class="row">
+    <div id="searchresult">
+
+        @foreach (var m in Model)
+            {
+            <div class="col-md-8 col-md-offset-1 my-border">
+                <h3><a href="/Book?BookId=@Html.DisplayFor(model => m.BookId)">@Html.DisplayFor(model => m.Title)</a></h3>
+                @if (m.Authors != String.Empty)
+                {
+                    <p><b>Авторы:</b> @Html.DisplayFor(model => m.Authors)</p>
+                }
+
+                @if (m.Genres != String.Empty)
+                {
+                    <p><b>Жанры:</b> @m.Genres</p>
+                }
+
+                @if (m.YearOfPublishing != 0)
+                {
+                    <p><b>Год издания</b>: @m.YearOfPublishing</p>
+                }
+
+                @if (m.PublishingHouse != null)
+                {
+                    <p><b>Издательство:</b> @m.PublishingHouse.Name</p>
+                }
+
+                @if (m.Description != null)
+                {
+                    <div id="@m.BookId">
+                        @Ajax.ActionLink("Показать описание", "ShowDescription", new { BookId = m.BookId }, new AjaxOptions { UpdateTargetId = m.BookId.ToString(), InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })
+                    </div>
+                }
+
+            </div>
+        }
+
+        <div class="col-md-10 for-page">
+            @Html.PagedListPager(Model, page => Url.Action("List", new { page }))
+            Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/scripts/jquery-1.10.2.min.js")
+@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
+
+

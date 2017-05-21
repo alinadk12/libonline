@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Список авторов";
+}
+
+@model PagedList.IPagedList<LibOnline.Models.Author>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@using (Ajax.BeginForm("AuthorSearch", new AjaxOptions { UpdateTargetId = "searchresult" }))
+{
+    <div class="form-group col-md-4 col-md-offset-8 mrn-top-70">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Поиск автора">
+            <span class="input-group-btn">
+                <input type="submit" value="Поиск" class="btn btn-primary" />
+            </span>
+        </div>
+    </div>
+}
+
+<div class="mrn-top-70">
+    <h1>@ViewBag.Title</h1>
+    <hr />
+</div>
+
+@if (User.IsInRole("Администратор"))
+{
+    <div class="btn-right">
+        <p><a class="btn btn-primary" href="/Author/Add">Добавить автора</a></p>
+        <h3 class="text-info">@ViewBag.StatusMessage</h3>
+    </div>
+}
+
+<div class="row" id="searchresult">
+
+    @foreach (var a in Model)
+    {
+        <div class="col-md-8 col-md-offset-1 my-border">
+            <h3><a href="/Author?AuthorId=@Html.DisplayFor(model => a.AuthorId)">@Html.DisplayFor(model => a.Fullname)</a></h3>
+
+            @if (a.Age != null)
+            {
+                <p><b>Возраст:</b> @Html.DisplayFor(model => a.Age)</p>
+            }
+
+            @if (a.Country != null)
+            {
+                <p><b>Страна:</b> @Html.DisplayFor(model => a.Country.Name)</p>
+            }
+
+            @if (a.Biography != null)
+            {
+                <div id="@a.AuthorId">
+                    @Ajax.ActionLink("Показать биографию", "ShowBiography", new { AuthorId = a.AuthorId }, new AjaxOptions { UpdateTargetId = a.AuthorId.ToString(), InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })
+                </div>
+            }
+        </div>
+    }
+    <div class="col-md-10 for-page">
+        @Html.PagedListPager(Model, page => Url.Action("List", new { page }))
+        Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+    </div>
+</div>
+
+@Scripts.Render("~/scripts/jquery-1.10.2.min.js")
+@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")

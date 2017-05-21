@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title | LibOnline</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("LibOnline", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (User.IsInRole("Администратор"))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Книги<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>@Html.ActionLink("Список книг", "List", "Book")</li>
+                                <li>@Html.ActionLink("Добавить книгу", "Add", "Book")</li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Авторы<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>@Html.ActionLink("Список авторов", "List", "Author")</li>
+                                <li>@Html.ActionLink("Добавить автора", "Add", "Author")</li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Администрирование<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>@Html.ActionLink("Список пользователей", "UserList", "Admin")</li>
+                                <li>@Html.ActionLink("Добавить книгу", "Add", "Book")</li>
+                                <li>@Html.ActionLink("Добавить автора", "Add", "Author")</li>
+                            </ul>
+                        </li>
+                        <li>@Html.ActionLink("Жанры", "List", "Genre")</li>
+                    }
+                    else
+                    {
+                        if (User.IsInRole("Пользователь"))
+                        {
+                            <li>@Html.ActionLink("Книги", "List", "Book")</li>
+                            <li>@Html.ActionLink("Авторы", "List", "Author")</li>
+                            <li>@Html.ActionLink("Жанры", "List", "Genre")</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Избранное<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("Избранные книги", "Favorites", "Book")</li>
+                                    <li>@Html.ActionLink("Избранные авторы", "Favorites", "Author")</li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                        <li>@Html.ActionLink("Книги", "List", "Book")</li>
+                        <li>@Html.ActionLink("Авторы", "List", "Author")</li>
+                        <li>@Html.ActionLink("Жанры", "List", "Genre")</li>
+                        }
+                      }
+
+                    <li>@Html.ActionLink("О проекте", "About", "Home")</li>
+                </ul>
+
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <div class="navbar navbar-default navbar-fixed-bottom navbar-inverse navbar-color navbar-footer">
+            <div class="container">
+                <p>LibOnline &copy; @DateTime.Now.Year</p>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,33 @@
+﻿@model List<LibOnline.Models.Author>
+
+@if (Model.Count < 1)
+{
+    <div class="col-md-8">
+        <p>По Вашему запросу ничего не найдено.</p>
+    </div>
+}
+
+@foreach (var a in Model)
+{
+    <div class="col-md-8 col-md-offset-1 my-border">
+        <h3><a href="/Author?AuthorId=@Html.DisplayFor(model => a.AuthorId)">@Html.DisplayFor(model => a.Fullname)</a></h3>
+
+        @if (a.Age != null)
+        {
+            <p><b>Возраст:</b> @Html.DisplayFor(model => a.Age)</p>
+        }
+
+        @if (a.Country != null)
+        {
+            <p><b>Страна:</b> @Html.DisplayFor(model => a.Country.Name)</p>
+        }
+
+        @if (a.Biography != null)
+        {
+            <div id="@a.AuthorId">
+                @Ajax.ActionLink("Показать биографию", "ShowBiography", new { AuthorId = a.AuthorId }, new AjaxOptions { UpdateTargetId = a.AuthorId.ToString(), InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })
+            </div>
+        }
+    </div>
+}
+

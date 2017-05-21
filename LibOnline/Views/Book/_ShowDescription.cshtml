@@ -1,0 +1,13 @@
+﻿@model LibOnline.Models.Book
+
+@using (Html.BeginForm())
+{
+    if (@Model.Description != null)
+    {
+        <b>Описание:</b>
+        <br>
+        @Model.Description
+    }
+}
+
+

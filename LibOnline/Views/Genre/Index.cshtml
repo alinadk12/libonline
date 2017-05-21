@@ -1,0 +1,53 @@
+﻿@model LibOnline.Models.Genre
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="mrn-top-70">
+        <h1>@ViewBag.Title</h1>
+        <hr />
+    </div>
+
+    @if (User.IsInRole("Администратор"))
+    {
+        <div class="btn-right">
+            <p><a class="btn btn-primary" href="/Genre/Edit?GenreId=@Model.GenreId">Редактировать</a></p>
+        </div>
+    }
+
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-1">
+            @if (Model.Description != null)
+            {
+                <p><b>Описание: </b></p>
+                <p>@Model.Description</p>
+            }
+
+            @if (Model.Books.Count > 0)
+            {
+                <p><b>Книги этого жанра:</b></p>
+                <ul>
+                    @foreach (var b in Model.Books)
+                    {
+                        <li><a href="Book?BookId=@b.BookId">@b.Title</a></li>
+                    }
+                </ul>
+            }
+            <div>
+                <br />
+                <a href="/Genre/List">Вернуться к списку жанров</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

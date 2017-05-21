@@ -1,0 +1,104 @@
+﻿@model LibOnline.Models.Book
+
+@{
+    ViewBag.Title = "Редактирование книги";
+}
+<div class="mrn-top-70">
+    <h1>@ViewBag.Title</h1>
+    <hr />
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.BookId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Введите название книги" })
+                @Html.ValidationMessageFor(model => model.Title)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.YearOfPublishing, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.YearOfPublishing, new { @class = "form-control", @placeholder = "Введите год издания" })
+                @Html.ValidationMessageFor(model => model.YearOfPublishing)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NumberOfPage, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.NumberOfPage, new { @class = "form-control", @placeholder = "Введите количество страниц" })
+                @Html.ValidationMessageFor(model => model.NumberOfPage)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PublishingHouseId, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.DropDownListFor(model => model.PublishingHouseId, ViewBag.PublishingHouses as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PublishingHouseId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Введите описание книги" })
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Author, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @{
+                    List<LibOnline.Models.Author> authors = ViewBag.Authors;
+                    foreach (LibOnline.Models.Author c in authors)
+                    {
+                        <input type="checkbox" name="selectedAuthors" value="@c.AuthorId"
+                               @(Model.Author.Contains(c) ? "checked=\"checked\"" : "") /> @c.Fullname <br />
+                    }
+
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Genre, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @{
+                    List<LibOnline.Models.Genre> genres = ViewBag.Genres;
+                    foreach (LibOnline.Models.Genre g in genres)
+                    {
+                        <input type="checkbox" name="selectedGenres" value="@g.GenreId"
+                               @(Model.Genre.Contains(g) ? "checked=\"checked\"" : "") /> @g.Name <br />
+                    }
+
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-5">
+                <input type="submit" value="Сохранить изменения" class="btn btn-xs btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="mrn-bottom-70">
+    <a href="/Book?BookId=@Model.BookId">Вернуться к книге</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+
+}

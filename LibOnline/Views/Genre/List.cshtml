@@ -1,0 +1,29 @@
+﻿@model List<LibOnline.Models.Genre>
+@{
+    ViewBag.Title = "Список жанров";
+}
+
+<div class="mrn-top-70">
+    <h1>@ViewBag.Title</h1>
+    <hr />
+</div>
+
+<div class="row">
+        @foreach (var m in Model)
+            {
+            <div class="col-md-8 col-md-offset-1">
+
+                <h3><a href="/Genre?GenreId=@Html.DisplayFor(model => m.GenreId)">@Html.DisplayFor(model => m.Name)</a></h3>
+                
+                @if (m.Description != null)
+                {
+                    <div id="@m.GenreId">
+                        @Ajax.ActionLink("Показать описание", "ShowDescription", new { GenreId = m.GenreId }, new AjaxOptions { UpdateTargetId = m.GenreId.ToString(), InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })
+                    </div>
+                }
+            </div>
+            <hr />
+        }
+</div>
+@Scripts.Render("~/scripts/jquery-1.10.2.min.js")
+@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")

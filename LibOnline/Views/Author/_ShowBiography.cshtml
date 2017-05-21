@@ -1,0 +1,10 @@
+﻿@model LibOnline.Models.Author
+
+@using (Html.BeginForm())
+{
+        if (Model.Biography != null)
+        {
+            <b>Краткая биография:</b>
+            @Model.Biography
+        } 
+}

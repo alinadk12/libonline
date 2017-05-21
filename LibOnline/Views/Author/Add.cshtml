@@ -1,0 +1,95 @@
+﻿@model LibOnline.Models.Author
+
+@{
+    ViewBag.Title = "Добавление нового автора";
+}
+
+<div class="mrn-top-70">
+    <h1>@ViewBag.Title</h1>
+    <hr />
+</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Введите имя автора" })
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Patronymic, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.Patronymic, new { @class = "form-control", @placeholder = "Введите отчество автора" })
+                @Html.ValidationMessageFor(model => model.Patronymic)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Surname, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.Surname, new { @class = "form-control", @placeholder = "Введите фамилию автора" })
+                @Html.ValidationMessageFor(model => model.Surname)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Birthday, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.Birthday, new { @class = "form-control", @placeholder = "Выберите дату рождения", @type = "date" })
+                @Html.ValidationMessageFor(model => model.Birthday)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Obit, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.Obit, new { @class = "form-control", @placeholder = "Выберите дату смерти", @type = "date" })
+                @Html.ValidationMessageFor(model => model.Obit)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CountryId, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.DropDownListFor(model => model.CountryId, ViewBag.Countries as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CountryId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Biography, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextAreaFor(model => model.Biography, new { @class = "form-control", @placeholder = "Введите краткую биографию" })
+                @Html.ValidationMessageFor(model => model.Biography)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-5">
+                <input type="submit" value="Добавить автора" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+                    }
+
+<div class="mrn-bottom-70">
+    @Html.ActionLink("Вернуться к списку авторов", "List")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+

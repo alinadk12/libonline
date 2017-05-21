@@ -1,0 +1,93 @@
+﻿@model LibOnline.Models.Book
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="mrn-top-70">
+        <h1>@ViewBag.Title</h1>
+        <hr />
+    </div>
+
+    @if (User.IsInRole("Администратор"))
+    {
+        <div class="btn-right">
+            <p><a class="btn btn-primary" href="/Book/Edit?BookId=@Model.BookId">Редактировать</a></p>
+            <p class="text-success">@ViewBag.StatusMessage</p>
+        </div>
+    }
+
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-1">
+            @if (Model.Author.Count > 0)
+            {
+                <p><b>Авторы:</b></p>
+                    <ul>
+                        @foreach (var a in Model.Author)
+                        {
+                            <li><a href="Author?AuthorId=@a.AuthorId">@a.Fullname</a></li>
+                        }
+                    </ul>
+            }
+
+            @if (Model.Genre.Count > 0)
+            {
+                <p><b>Жанры:</b></p>
+                    <ul>
+                        @foreach (var g in Model.Genre)
+                        {
+                            <li><a href="Genre?GenreId=@g.GenreId">@g.Name</a></li>
+                        }
+                    </ul>
+            }
+
+            @if (Model.YearOfPublishing != 0)
+            {
+                <p><b>Год издания: </b>@Model.YearOfPublishing</p>
+            }
+
+            @if (Model.PublishingHouse != null)
+            {
+                <p><b>Издательство: </b>@Model.PublishingHouse.Name</p>
+            }
+            @if (Model.NumberOfPage != 0)
+            {
+                <p><b>Количество страниц: </b>@Model.NumberOfPage</p>
+            }
+
+            @if (Model.Description != null)
+            {
+                <p><b>Описание: </b></p>
+                    <p>@Model.Description</p>
+            }
+            <div>
+                <br />
+                <a href="/Book/List">Вернуться к списку книг</a>
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (ViewBag.BookInFav)
+                {
+                    <div class="btn-right">
+                        <p><a class="btn-sm btn-danger" href="/Book/DeleteFavorite?BookId=@Model.BookId">Удалить из избранного</a></p>
+                    </div>
+                }
+                else
+                {
+                    <div class="btn-right">
+                        <p><a class="btn-sm btn-success" href="/Book/AddFavorite?BookId=@Model.BookId">Добавить в избранное</a></p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</body>
+</html>

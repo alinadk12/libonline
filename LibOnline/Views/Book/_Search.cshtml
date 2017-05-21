@@ -1,0 +1,41 @@
+﻿@model List<LibOnline.Models.Book>
+
+@if (Model.Count < 1)
+{
+    <div class="col-md-8">
+        <p>По Вашему запросу ничего не найдено.</p>
+    </div>
+}
+
+@foreach (var m in Model)
+{
+    <div class="col-md-8 col-md-offset-1 my-border">
+        <h3><a href="/Book?BookId=@Html.DisplayFor(model => m.BookId)">@Html.DisplayFor(model => m.Title)</a></h3>
+        @if (m.Authors != String.Empty)
+                {
+            <p><b>Авторы:</b> @Html.DisplayFor(model => m.Authors)</p>
+        }
+
+        @if (m.Genres != String.Empty)
+                {
+            <p><b>Жанры:</b> @m.Genres</p>
+        }
+
+        @if (m.YearOfPublishing != 0)
+                {
+            <p><b>Год издания</b>: @m.YearOfPublishing</p>
+        }
+
+        @if (m.PublishingHouse != null)
+                {
+            <p><b>Издательство:</b> @m.PublishingHouse.Name</p>
+        }
+
+        @if (m.Description != null)
+                {
+            <div id="@m.BookId">
+                @Ajax.ActionLink("Показать описание", "ShowDescription", new { BookId = m.BookId }, new AjaxOptions { UpdateTargetId = m.BookId.ToString(), InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })
+            </div>
+        }
+    </div>
+}

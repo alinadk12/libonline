@@ -1,0 +1,83 @@
+﻿@model LibOnline.Models.Author
+
+@{
+    ViewBag.Title = Model.Fullname;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="mrn-top-70">
+        <h1>@ViewBag.Title</h1>
+        <hr />
+    </div>
+
+    @if (User.IsInRole("Администратор"))
+    {
+        <div class="btn-right">
+            <p><a class="btn btn-primary" href="/Author/Edit?AuthorId=@Model.AuthorId">Редактировать</a></p>
+            <p class="text-success">@ViewBag.StatusMessage</p>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-1">
+            @if (Model.Birthday != null)
+            {
+                <p><b>Дата рождения: </b>@Model.Birthday.Value.ToString("dd.MM.yyyy")</p>
+            }
+            @if (Model.Obit != null)
+            {
+                <p><b>Дата смерти: </b>@Model.Obit.Value.ToString("dd.MM.yyyy")</p>
+            }
+            @if (Model.Age != null)
+            {
+                <p><b>Возраст: </b>@Model.Age</p>
+            }
+            @if (Model.Country != null)
+            {
+                <p><b>Страна: </b>@Model.Country.Name</p>
+            }
+            @if (Model.Biography != null)
+            {
+                <p><b>Краткая биография: </b></p>
+                <p>@Model.Biography</p>
+            }
+            @if (Model.Books.Count > 0)
+            {
+                <p><b>Написанные книги:</b></p>
+                <ul>
+                    @foreach (var b in Model.Books)
+                    {
+                        <li><a href="Book?BookId=@b.BookId">@b.Title</a></li>
+                    }
+                </ul>
+            }
+            <div>
+                <br />
+                <a href="/Author/List">Вернуться к списку авторов</a>
+            </div>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (ViewBag.AuthorInFav)
+                {
+                    <div class="btn-right">
+                        <p><a class="btn-sm btn-danger" href="/Author/DeleteFavorite?AuthorId=@Model.AuthorId">Удалить из избранного</a></p>
+                    </div>
+                }
+                else
+                {
+                    <div class="btn-right">
+                        <p><a class="btn-sm btn-success" href="/Author/AddFavorite?AuthorId=@Model.AuthorId">Добавить в избранное</a></p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</body>
+</html>
